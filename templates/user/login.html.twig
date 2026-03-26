@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Connexion{% endblock %}
+
+{% block body %}
+    <h1>Connexion</h1>
+
+    <form id="login-form">
+        <div>
+            <label>Email</label>
+            <input type="email" id="login-email" required>
+        </div>
+        <div>
+            <label>Mot de passe</label>
+            <input type="password" id="login-password" required>
+        </div>
+        <button type="submit">Connexion par mot de passe</button>
+    </form>
+
+    <hr>
+
+    <button onclick="loginWithPasskey()">Connexion avec Passkey</button>
+
+    <p id="login-message"></p>
+
+    <script>
+        document.getElementById('login-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const response = await fetch('/api/auth/login', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    email: document.getElementById('login-email').value,
+                    password: document.getElementById('login-password').value
+                })
+            });
+
+            const data = await response.json();
+
+            if (data.token) {
+                localStorage.setItem('token', data.token);
+                localStorage.setItem('refresh_token', data.refresh_token);
+                document.getElementById('login-message').innerText = 'Connexion réussie';
+            } else {
+                document.getElementById('login-message').innerText = data.message || data.error || 'Erreur';
+            }
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Event Reservation{% endblock %}</title>
+    <script src="/js/auth.js" defer></script>
+</head>
+<body>
+    <nav>
+        <a href="/">Accueil</a> |
+        <a href="/events">Événements</a>
+    </nav>
+    <hr>
+    {% block body %}{% endblock %}
+</body>
+</html>

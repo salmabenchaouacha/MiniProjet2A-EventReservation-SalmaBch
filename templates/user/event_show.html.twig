@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détail événement{% endblock %}
+
+{% block body %}
+    <h1>{{ event.title }}</h1>
+
+    <p>{{ event.description }}</p>
+    <p><strong>Date :</strong> {{ event.date|date('Y-m-d H:i') }}</p>
+    <p><strong>Lieu :</strong> {{ event.location }}</p>
+    <p><strong>Places restantes :</strong> {{ event.availableSeats }}</p>
+
+    {% if event.image %}
+        <img src="/uploads/events/{{ event.image }}" alt="{{ event.title }}" width="300">
+    {% endif %}
+
+    <hr>
+
+    <h2>Réserver</h2>
+    <form id="reservation-form">
+        <input type="hidden" id="event_id" value="{{ event.id }}">
+        <div>
+            <label>Nom</label>
+            <input type="text" id="name" required>
+        </div>
+        <div>
+            <label>Email</label>
+            <input type="email" id="email" required>
+        </div>
+        <div>
+            <label>Téléphone</label>
+            <input type="text" id="phone" required>
+        </div>
+        <button type="submit">Réserver</button>
+    </form>
+
+    <p id="reservation-message"></p>
+
+    <script>
+        document.getElementById('reservation-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const payload = {
+                event_id: document.getElementById('event_id').value,
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value
+            };
+
+            const response = await authFetch('/api/reservations', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(payload)
+            });
+
+            const data = await response.json();
+            document.getElementById('reservation-message').innerText = data.message || data.error;
+        });
+    </script>
+{% endblock %}

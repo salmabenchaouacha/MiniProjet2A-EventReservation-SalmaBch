@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Inscription{% endblock %}
+
+{% block body %}
+    <h1>Créer un compte</h1>
+
+    <form id="register-form">
+        <div>
+            <label>Nom complet</label>
+            <input type="text" id="register-fullName" required>
+        </div>
+        <div>
+            <label>Email</label>
+            <input type="email" id="register-email" required>
+        </div>
+        <div>
+            <label>Mot de passe</label>
+            <input type="password" id="register-password" required>
+        </div>
+        <button type="submit">S’inscrire</button>
+    </form>
+
+    <p id="register-message"></p>
+
+    <script>
+        document.getElementById('register-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const response = await fetch('/api/auth/register', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    fullName: document.getElementById('register-fullName').value,
+                    email: document.getElementById('register-email').value,
+                    password: document.getElementById('register-password').value
+                })
+            });
+
+            const data = await response.json();
+            document.getElementById('register-message').innerText = data.message || data.error;
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Événements{% endblock %}
+
+{% block body %}
+    <h1>Liste des événements</h1>
+
+    {% for event in events %}
+        <div style="border:1px solid #ccc; padding:10px; margin-bottom:10px;">
+            <h2>{{ event.title }}</h2>
+            <p>{{ event.description|slice(0, 120) }}...</p>
+            <p><strong>Date :</strong> {{ event.date|date('Y-m-d H:i') }}</p>
+            <p><strong>Lieu :</strong> {{ event.location }}</p>
+            <p><strong>Places restantes :</strong> {{ event.availableSeats }}</p>
+            <a href="{{ path('app_event_show', {id: event.id}) }}">Voir détail</a>
+        </div>
+    {% else %}
+        <p>Aucun événement.</p>
+    {% endfor %}
+{% endblock %}
