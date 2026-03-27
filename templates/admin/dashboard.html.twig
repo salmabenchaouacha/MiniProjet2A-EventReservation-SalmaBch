@@ -5,4 +5,7 @@
 {% block body %}
     <h1>Dashboard administrateur</h1>
     <p>Gestion des événements et des réservations.</p>
+
+    <a href="{{ path('admin_events_index') }}">Gérer les événements</a><br>
+    <a href="{{ path('admin_events_new') }}">Ajouter un événement</a>
 {% endblock %}

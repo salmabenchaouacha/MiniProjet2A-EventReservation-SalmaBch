@@ -19,7 +19,7 @@
 
     <hr>
 
-    <button onclick="loginWithPasskey()">Connexion avec Passkey</button>
+    <button type="button" onclick="loginWithPasskey()">Connexion avec Passkey</button>
 
     <p id="login-message"></p>
 
@@ -38,18 +38,21 @@
 
             const data = await response.json();
 
-           if (data.token) {
-    localStorage.setItem('token', data.token);
-    localStorage.setItem('refresh_token', data.refresh_token);
+            if (data.token) {
+                localStorage.setItem('token', data.token);
 
-    document.getElementById('login-message').innerText = 'Connexion réussie';
+                if (data.refresh_token) {
+                    localStorage.setItem('refresh_token', data.refresh_token);
+                }
 
-    // redirection après 1 seconde
-    setTimeout(() => {
-        window.location.href = '/';
-    }, 1000);
-}else {
-                document.getElementById('login-message').innerText = data.message || data.error || 'Erreur';
+                document.getElementById('login-message').innerText = 'Connexion réussie';
+
+                setTimeout(() => {
+                    window.location.href = '/';
+                }, 1000);
+            } else {
+                document.getElementById('login-message').innerText =
+                    data.message || data.error || 'Erreur';
             }
         });
     </script>

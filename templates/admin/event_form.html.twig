@@ -3,5 +3,73 @@
 {% block title %}Formulaire événement{% endblock %}
 
 {% block body %}
-    <h1>Créer / modifier un événement</h1>
+    <h1>Créer un événement</h1>
+
+    <form id="event-form" enctype="multipart/form-data">
+        <div>
+            <label>Titre</label>
+            <input type="text" name="title" required>
+        </div>
+
+        <div>
+            <label>Description</label>
+            <textarea name="description" required></textarea>
+        </div>
+
+        <div>
+            <label>Lieu</label>
+            <input type="text" name="location" required>
+        </div>
+
+        <div>
+            <label>Nombre de places</label>
+            <input type="number" name="seats" min="1" required>
+        </div>
+
+        <div>
+            <label>Date</label>
+            <input type="datetime-local" name="date" required>
+        </div>
+
+        <div>
+            <label>Image</label>
+            <input type="file" name="image" accept="image/*">
+        </div>
+
+        <button type="submit">Créer</button>
+    </form>
+
+    <p id="message"></p>
+
+    <script>
+        document.getElementById('event-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const token = localStorage.getItem('token');
+            const form = document.getElementById('event-form');
+            const formData = new FormData(form);
+
+            const dateValue = formData.get('date');
+            if (dateValue) {
+                formData.set('date', dateValue.replace('T', ' ') + ':00');
+            }
+
+            const response = await fetch('/api/admin/events', {
+                method: 'POST',
+                headers: {
+                    'Authorization': 'Bearer ' + token
+                },
+                body: formData
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                document.getElementById('message').innerText = 'Événement créé avec succès';
+                form.reset();
+            } else {
+                document.getElementById('message').innerText = data.message || data.error || 'Erreur lors de la création';
+            }
+        });
+    </script>
 {% endblock %}
