@@ -101,10 +101,13 @@ async function loginWithPasskey() {
     const data = await verifyResponse.json();
 
     if (data.token) {
-        localStorage.setItem('token', data.token);
-        localStorage.setItem('refresh_token', data.refresh_token);
-        alert('Connexion réussie avec passkey.');
-    } else {
+    localStorage.setItem('token', data.token);
+    localStorage.setItem('refresh_token', data.refresh_token);
+
+    alert('Connexion réussie avec passkey.');
+
+    window.location.href = '/';
+} else {
         alert(data.error || 'Erreur de connexion.');
     }
 }

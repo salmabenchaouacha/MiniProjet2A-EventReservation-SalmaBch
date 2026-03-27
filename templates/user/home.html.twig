@@ -7,4 +7,37 @@
     <p>Application de réservation d’événements.</p>
 
     <p><a href="/events">Voir les événements</a></p>
+
+    <hr>
+
+    <button onclick="handleRegisterPasskey()">Ajouter une passkey</button>
+    <p id="passkey-message"></p>
+
+    <hr>
+
+    <button onclick="logout()">Se déconnecter</button>
+
+    <script>
+        const token = localStorage.getItem('token');
+
+        if (!token) {
+            window.location.href = '/login';
+        }
+
+        async function handleRegisterPasskey() {
+            try {
+                const result = await registerPasskey();
+                document.getElementById('passkey-message').innerText =
+                    result.message || result.error || 'Passkey traitée';
+            } catch (e) {
+                document.getElementById('passkey-message').innerText = e.message;
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('refresh_token');
+            window.location.href = '/login';
+        }
+    </script>
 {% endblock %}

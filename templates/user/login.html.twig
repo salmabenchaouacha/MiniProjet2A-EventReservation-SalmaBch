@@ -38,11 +38,17 @@
 
             const data = await response.json();
 
-            if (data.token) {
-                localStorage.setItem('token', data.token);
-                localStorage.setItem('refresh_token', data.refresh_token);
-                document.getElementById('login-message').innerText = 'Connexion réussie';
-            } else {
+           if (data.token) {
+    localStorage.setItem('token', data.token);
+    localStorage.setItem('refresh_token', data.refresh_token);
+
+    document.getElementById('login-message').innerText = 'Connexion réussie';
+
+    // redirection après 1 seconde
+    setTimeout(() => {
+        window.location.href = '/';
+    }, 1000);
+}else {
                 document.getElementById('login-message').innerText = data.message || data.error || 'Erreur';
             }
         });

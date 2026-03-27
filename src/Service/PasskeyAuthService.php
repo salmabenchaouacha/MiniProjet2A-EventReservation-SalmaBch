@@ -15,37 +15,36 @@ class PasskeyAuthService
     }
 
     public function getRegistrationOptions(User $user): array
-    {
-        $challenge = rtrim(strtr(base64_encode(random_bytes(32)), '+/', '-_'), '=');
+{
+    $challenge = rtrim(strtr(base64_encode(random_bytes(32)), '+/', '-_'), '=');
 
-        $options = [
-            'challenge' => $challenge,
-            'rp' => [
-                'name' => $_ENV['WEBAUTHN_RP_NAME'] ?? 'Event Reservation App',
-                'id' => $_ENV['APP_DOMAIN'] ?? 'localhost',
-            ],
-            'user' => [
-                'id' => base64_encode((string) $user->getId()),
-                'name' => $user->getEmail(),
-                'displayName' => $user->getFullName(),
-            ],
-            'pubKeyCredParams' => [
-                ['alg' => -7, 'type' => 'public-key'],
-                ['alg' => -257, 'type' => 'public-key'],
-            ],
-            'timeout' => 60000,
-            'attestation' => 'none',
-            'authenticatorSelection' => [
-                'residentKey' => 'preferred',
-                'userVerification' => 'preferred',
-            ],
-        ];
+    $options = [
+        'challenge' => $challenge,
+        'rp' => [
+    'name' => $_ENV['WEBAUTHN_RP_NAME'] ?? 'Event Reservation App',
+],
+        'user' => [
+            'id' => base64_encode((string) $user->getId()),
+            'name' => $user->getEmail(),
+            'displayName' => $user->getFullName(),
+        ],
+        'pubKeyCredParams' => [
+            ['alg' => -7, 'type' => 'public-key'],
+            ['alg' => -257, 'type' => 'public-key'],
+        ],
+        'timeout' => 60000,
+        'attestation' => 'none',
+        'authenticatorSelection' => [
+            'residentKey' => 'preferred',
+            'userVerification' => 'preferred',
+        ],
+    ];
 
-        $session = $this->requestStack->getSession();
-        $session->set('webauthn_registration', $options);
+    $session = $this->requestStack->getSession();
+    $session->set('webauthn_registration', $options);
 
-        return $options;
-    }
+    return $options;
+}
 
     public function verifyRegistration(array $payload, User $user): void
     {
@@ -73,22 +72,21 @@ class PasskeyAuthService
     }
 
     public function getLoginOptions(): array
-    {
-        $challenge = rtrim(strtr(base64_encode(random_bytes(32)), '+/', '-_'), '=');
+{
+    $challenge = rtrim(strtr(base64_encode(random_bytes(32)), '+/', '-_'), '=');
 
-        $options = [
-            'challenge' => $challenge,
-            'rpId' => $_ENV['APP_DOMAIN'] ?? 'localhost',
-            'timeout' => 60000,
-            'userVerification' => 'preferred',
-        ];
+    $options = [
+        'challenge' => $challenge,
+        'rpId' => 'localhost',
+        'timeout' => 60000,
+        'userVerification' => 'preferred',
+    ];
 
-        $session = $this->requestStack->getSession();
-        $session->set('webauthn_login', $options);
+    $session = $this->requestStack->getSession();
+    $session->set('webauthn_login', $options);
 
-        return $options;
-    }
-
+    return $options;
+}
     public function verifyLogin(array $payload): User
     {
         $session = $this->requestStack->getSession();
