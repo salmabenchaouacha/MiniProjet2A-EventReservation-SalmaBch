@@ -1,34 +1,52 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Formulaire événement{% endblock %}
+{% block title %}
+    {% if is_edit %}Modifier événement{% else %}Créer événement{% endif %}
+{% endblock %}
 
 {% block body %}
-    <h1>Créer un événement</h1>
+    <h1>
+        {% if is_edit %}Modifier un événement{% else %}Créer un événement{% endif %}
+    </h1>
 
-    <form id="event-form" enctype="multipart/form-data">
+    {% for message in app.flashes('success') %}
+        <div style="color: green; margin-bottom: 10px;">{{ message }}</div>
+    {% endfor %}
+
+    {% for message in app.flashes('error') %}
+        <div style="color: red; margin-bottom: 10px;">{{ message }}</div>
+    {% endfor %}
+
+    <form method="post"
+          action="{% if is_edit %}{{ path('admin_events_update', {id: event.id}) }}{% else %}{{ path('admin_events_create') }}{% endif %}"
+          enctype="multipart/form-data">
+
         <div>
             <label>Titre</label>
-            <input type="text" name="title" required>
+            <input type="text" name="title" required value="{{ event ? event.title : '' }}">
         </div>
 
         <div>
             <label>Description</label>
-            <textarea name="description" required></textarea>
+            <textarea name="description" required>{{ event ? event.description : '' }}</textarea>
         </div>
 
         <div>
             <label>Lieu</label>
-            <input type="text" name="location" required>
+            <input type="text" name="location" required value="{{ event ? event.location : '' }}">
         </div>
 
         <div>
             <label>Nombre de places</label>
-            <input type="number" name="seats" min="1" required>
+            <input type="number" name="seats" min="1" required value="{{ event ? event.seats : '' }}">
         </div>
 
         <div>
             <label>Date</label>
-            <input type="datetime-local" name="date" required>
+            <input type="datetime-local"
+                   name="date"
+                   required
+                   value="{{ event and event.date ? event.date|date('Y-m-d\\TH:i') : '' }}">
         </div>
 
         <div>
@@ -36,40 +54,18 @@
             <input type="file" name="image" accept="image/*">
         </div>
 
-        <button type="submit">Créer</button>
+        {% if is_edit and event.image %}
+            <div style="margin-top: 10px;">
+                <p>Image actuelle :</p>
+                <img src="{{ asset('uploads/' ~ event.image) }}" alt="{{ event.title }}" width="120">
+            </div>
+        {% endif %}
+
+        <div style="margin-top: 15px;">
+            <button type="submit">
+                {% if is_edit %}Mettre à jour{% else %}Créer{% endif %}
+            </button>
+            <a href="{{ path('admin_events_index') }}">Retour à la liste</a>
+        </div>
     </form>
-
-    <p id="message"></p>
-
-    <script>
-        document.getElementById('event-form').addEventListener('submit', async function(e) {
-            e.preventDefault();
-
-            const token = localStorage.getItem('token');
-            const form = document.getElementById('event-form');
-            const formData = new FormData(form);
-
-            const dateValue = formData.get('date');
-            if (dateValue) {
-                formData.set('date', dateValue.replace('T', ' ') + ':00');
-            }
-
-            const response = await fetch('/api/admin/events', {
-                method: 'POST',
-                headers: {
-                    'Authorization': 'Bearer ' + token
-                },
-                body: formData
-            });
-
-            const data = await response.json();
-
-            if (response.ok) {
-                document.getElementById('message').innerText = 'Événement créé avec succès';
-                form.reset();
-            } else {
-                document.getElementById('message').innerText = data.message || data.error || 'Erreur lors de la création';
-            }
-        });
-    </script>
 {% endblock %}

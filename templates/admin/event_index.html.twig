@@ -5,5 +5,63 @@
 {% block body %}
     <h1>Gestion des événements</h1>
 
-    <a href="{{ path('admin_events_new') }}">Créer un nouvel événement</a>
+    <p>
+        <a href="{{ path('admin_events_new') }}">Créer un nouvel événement</a>
+    </p>
+
+    {% for message in app.flashes('success') %}
+        <div style="color: green; margin-bottom: 10px;">{{ message }}</div>
+    {% endfor %}
+
+    {% for message in app.flashes('error') %}
+        <div style="color: red; margin-bottom: 10px;">{{ message }}</div>
+    {% endfor %}
+
+    {% if events is empty %}
+        <p>Aucun événement trouvé.</p>
+    {% else %}
+        <table border="1" cellpadding="10" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Titre</th>
+                    <th>Lieu</th>
+                    <th>Date</th>
+                    <th>Places</th>
+                    <th>Places disponibles</th>
+                    <th>Image</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for event in events %}
+                    <tr>
+                        <td>{{ event.id }}</td>
+                        <td>{{ event.title }}</td>
+                        <td>{{ event.location }}</td>
+                        <td>{{ event.date ? event.date|date('Y-m-d H:i') : '' }}</td>
+                        <td>{{ event.seats }}</td>
+                        <td>{{ event.availableSeats }}</td>
+                        <td>
+                            {% if event.image %}
+                                <img src="{{ asset('uploads/' ~ event.image) }}" alt="{{ event.title }}" width="80">
+                            {% else %}
+                                Aucune
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a href="{{ path('admin_events_edit', {id: event.id}) }}">Modifier</a>
+
+                            <form method="post"
+                                  action="{{ path('admin_events_delete', {id: event.id}) }}"
+                                  style="display:inline;"
+                                  onsubmit="return confirm('Supprimer cet événement ?');">
+                                <button type="submit">Supprimer</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
 {% endblock %}

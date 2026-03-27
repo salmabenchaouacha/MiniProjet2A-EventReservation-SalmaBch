@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use App\Repository\EventRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -18,14 +19,21 @@ class AdminPageController extends AbstractController
     }
 
     #[Route('/events', name: 'admin_events_index', methods: ['GET'])]
-    public function eventsIndex(): Response
+    public function eventsIndex(EventRepository $eventRepository): Response
     {
-        return $this->render('admin/event_index.html.twig');
+        $events = $eventRepository->findBy([], ['date' => 'ASC']);
+
+        return $this->render('admin/event_index.html.twig', [
+            'events' => $events,
+        ]);
     }
 
     #[Route('/events/new', name: 'admin_events_new', methods: ['GET'])]
     public function newEvent(): Response
     {
-        return $this->render('admin/event_form.html.twig');
+        return $this->render('admin/event_form.html.twig', [
+            'event' => null,
+            'is_edit' => false,
+        ]);
     }
 }
