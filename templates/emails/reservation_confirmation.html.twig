@@ -1,0 +1,12 @@
+<h2>Confirmation de réservation</h2>
+
+<p>Bonjour {{ reservation.name }},</p>
+
+<p>Votre réservation a bien été enregistrée.</p>
+
+<p><strong>Événement :</strong> {{ event.title }}</p>
+<p><strong>Date :</strong> {{ event.date|date('Y-m-d H:i') }}</p>
+<p><strong>Lieu :</strong> {{ event.location }}</p>
+<p><strong>Téléphone :</strong> {{ reservation.phone }}</p>
+
+<p>Merci pour votre réservation et à bientôt.</p>

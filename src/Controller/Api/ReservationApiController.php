@@ -11,6 +11,9 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
+use Symfony\Component\Mime\Address;
 
 #[Route('/api')]
 class ReservationApiController extends AbstractController
@@ -19,6 +22,7 @@ class ReservationApiController extends AbstractController
     public function create(
         Request $request,
         EntityManagerInterface $entityManager,
+        MailerInterface $mailer,
         #[CurrentUser] ?User $user
     ): JsonResponse {
         $data = json_decode($request->getContent(), true);
@@ -54,8 +58,29 @@ class ReservationApiController extends AbstractController
         $entityManager->persist($reservation);
         $entityManager->flush();
 
+        try {
+            $confirmationEmail = (new TemplatedEmail())
+                ->from(new Address('benchaouachasalma8@gmail.com', 'Event Reservation App'))
+                ->to($reservation->getEmail())
+                ->subject('Confirmation de votre réservation')
+                ->htmlTemplate('emails/reservation_confirmation.html.twig')
+                ->context([
+                    'reservation' => $reservation,
+                    'event' => $event,
+                ]);
+
+            $mailer->send($confirmationEmail);
+
+            $message = 'Réservation confirmée. Un email de confirmation a été envoyé.';
+        } catch (\Exception $e) {
+    return $this->json([
+        'message' => 'Réservation confirmée, mais l’email de confirmation n’a pas pu être envoyé.',
+        'error_detail' => $e->getMessage(),
+    ], 500);
+}
+
         return $this->json([
-            'message' => 'Réservation confirmée.',
+            'message' => $message,
             'reservation' => [
                 'id' => $reservation->getId(),
                 'name' => $reservation->getName(),
