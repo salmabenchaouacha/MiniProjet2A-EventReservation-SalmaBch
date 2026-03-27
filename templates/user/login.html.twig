@@ -3,25 +3,39 @@
 {% block title %}Connexion{% endblock %}
 
 {% block body %}
-    <h1>Connexion</h1>
+    <section class="auth-wrapper">
+        <div class="auth-card">
+            <div class="text-center mb-2">
+                <span class="badge">Espace utilisateur</span>
+                <h1 class="page-title">Connexion</h1>
+                <p class="page-subtitle">Connectez-vous avec votre email/mot de passe ou avec votre passkey.</p>
+            </div>
 
-    <form id="login-form">
-        <div>
-            <label>Email</label>
-            <input type="email" id="login-email" required>
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="login-email">Email</label>
+                    <input type="email" id="login-email" placeholder="Votre adresse email" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="login-password">Mot de passe</label>
+                    <input type="password" id="login-password" placeholder="Votre mot de passe" required>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Connexion par mot de passe</button>
+            </form>
+
+            <div class="text-center mt-2 mb-1 muted">ou</div>
+
+            <button type="button" onclick="loginWithPasskey()" class="btn btn-secondary">Connexion avec Passkey</button>
+
+            <p id="login-message" class="mt-1 text-center muted"></p>
+
+            <div class="text-center mt-2">
+                <p>Vous n’avez pas de compte ? <a href="{{ path('app_register_page') }}" style="color:#c4b5fd;">Inscrivez-vous</a></p>
+            </div>
         </div>
-        <div>
-            <label>Mot de passe</label>
-            <input type="password" id="login-password" required>
-        </div>
-        <button type="submit">Connexion par mot de passe</button>
-    </form>
-
-    <hr>
-
-    <button type="button" onclick="loginWithPasskey()">Connexion avec Passkey</button>
-
-    <p id="login-message"></p>
+    </section>
 
     <script>
         document.getElementById('login-form').addEventListener('submit', async function(e) {

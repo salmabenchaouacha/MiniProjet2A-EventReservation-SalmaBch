@@ -3,9 +3,31 @@
 {% block title %}Dashboard Admin{% endblock %}
 
 {% block body %}
-    <h1>Dashboard administrateur</h1>
-    <p>Gestion des événements et des réservations.</p>
+    <section class="dashboard-card">
+        <span class="badge">Administration</span>
+        <h1 class="page-title">Dashboard administrateur</h1>
+        <p class="page-subtitle">
+            Gérez les événements, suivez les réservations et mettez à jour votre plateforme depuis cet espace.
+        </p>
 
-    <a href="{{ path('admin_events_index') }}">Gérer les événements</a><br>
-    <a href="{{ path('admin_events_new') }}">Ajouter un événement</a>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>⚡</h3>
+                <p>Gestion rapide des événements</p>
+            </div>
+            <div class="stat-card">
+                <h3>🎫</h3>
+                <p>Suivi des places disponibles</p>
+            </div>
+            <div class="stat-card">
+                <h3>📅</h3>
+                <p>Organisation claire et moderne</p>
+            </div>
+        </div>
+
+        <div class="actions-row mt-2">
+            <a href="{{ path('admin_events_index') }}" class="btn btn-primary">Gérer les événements</a>
+            <a href="{{ path('admin_events_new') }}" class="btn btn-secondary">Ajouter un événement</a>
+        </div>
+    </section>
 {% endblock %}

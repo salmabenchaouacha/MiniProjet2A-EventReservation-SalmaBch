@@ -3,19 +3,91 @@
 {% block title %}Accueil{% endblock %}
 
 {% block body %}
-    <h1>Bienvenue</h1>
-    <p>Application de réservation d’événements.</p>
+    <section class="hero">
+        <div class="hero-card">
+            <span class="badge">Plateforme moderne de réservation</span>
+            <h1>Réservez vos événements facilement et rapidement</h1>
+            <p class="lead">
+                Découvrez les événements à venir, consultez leurs détails et réservez votre place
+                en quelques secondes avec une interface élégante et intuitive.
+            </p>
 
-    <p><a href="/events">Voir les événements</a></p>
+            <div class="hero-actions">
+                <a href="{{ path('app_events') }}" class="btn btn-primary">Voir tous les événements</a>
+                <a href="{{ path('app_register_page') }}" class="btn btn-secondary">Créer un compte</a>
+            </div>
+        </div>
 
-    <hr>
+        <div class="info-card">
+            <h2 class="section-title">Fonctionnalités</h2>
+            <div class="grid">
+                <div class="glass-card" style="padding: 1rem;">
+                    <h3>Réservation simple</h3>
+                    <p class="muted">Réservez une place avec vos informations en quelques clics.</p>
+                </div>
+                <div class="glass-card" style="padding: 1rem;">
+                    <h3>Passkey</h3>
+                    <p class="muted">Une expérience de connexion moderne et sécurisée.</p>
+                </div>
+                <div class="glass-card" style="padding: 1rem;">
+                    <h3>Gestion admin</h3>
+                    <p class="muted">Ajoutez, modifiez et supprimez les événements facilement.</p>
+                </div>
+            </div>
 
-    <button onclick="handleRegisterPasskey()">Ajouter une passkey</button>
-    <p id="passkey-message"></p>
+            <div class="actions-row mt-2">
+                <button onclick="handleRegisterPasskey()" class="btn btn-secondary" type="button">Ajouter une passkey</button>
+                <button onclick="logout()" class="btn btn-danger" type="button">Se déconnecter</button>
+            </div>
 
-    <hr>
+            <p id="passkey-message" class="mt-1 muted"></p>
+        </div>
+    </section>
 
-    <button onclick="logout()">Se déconnecter</button>
+    <section class="mt-2">
+        <span class="badge">Événements disponibles</span>
+        <h2 class="page-title" style="font-size: 2.2rem;">Découvrez les événements à venir</h2>
+        <p class="page-subtitle">
+            Réservez votre place parmi les événements actuellement disponibles.
+        </p>
+
+        {% if events is empty %}
+            <div class="glass-card empty-state mt-2">
+                <h3>Aucun événement disponible</h3>
+                <p>Revenez bientôt pour découvrir les prochaines activités.</p>
+            </div>
+        {% else %}
+            <div class="events-grid">
+                {% for event in events %}
+                    <article class="event-card">
+                        {% if event.image %}
+                            <img class="event-card-image" src="{{ asset('uploads/' ~ event.image) }}" alt="{{ event.title }}">
+                        {% else %}
+                            <img class="event-card-image" src="https://placehold.co/600x400?text=Event" alt="{{ event.title }}">
+                        {% endif %}
+
+                        <div class="event-card-body">
+                            <h3>{{ event.title }}</h3>
+
+                            <p class="event-description">
+                                {{ event.description|length > 120 ? event.description|slice(0, 120) ~ '...' : event.description }}
+                            </p>
+
+                            <div class="event-meta">
+                                <span><strong>Date :</strong> {{ event.date|date('d/m/Y H:i') }}</span>
+                                <span><strong>Lieu :</strong> {{ event.location }}</span>
+                                <span><strong>Places restantes :</strong> {{ event.availableSeats }}</span>
+                            </div>
+
+                            <a href="{{ path('app_event_show', {id: event.id}) }}" class="btn btn-primary">
+                                Voir détail
+                            </a>
+                        </div>
+                    </article>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </section>
 
     <script>
         const token = localStorage.getItem('token');

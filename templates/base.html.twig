@@ -1,16 +1,53 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Event Reservation{% endblock %}</title>
-    <script src="/js/auth.js" defer></script>
+
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    <script src="{{ asset('js/auth.js') }}" defer></script>
+
+    {% block stylesheets %}{% endblock %}
 </head>
-<body>
-    <nav>
-        <a href="/">Accueil</a> |
-        <a href="/events">Événements</a>
-    </nav>
-    <hr>
-    {% block body %}{% endblock %}
+<body class="{% block body_class %}{% endblock %}">
+    <header class="site-header">
+        <div class="container nav-wrapper">
+            <a href="{{ path('app_home') }}" class="logo">
+                <span class="logo-badge">ER</span>
+                <span>Event Reservation</span>
+            </a>
+
+            <nav class="main-nav">
+                <a href="{{ path('app_home') }}">Accueil</a>
+                <a href="{{ path('app_events') }}">Événements</a>
+                <a href="{{ path('app_login_page') }}">Connexion</a>
+                <a href="{{ path('app_register_page') }}">Inscription</a>
+                <a href="{{ path('admin_dashboard') }}">Admin</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="page">
+        <div class="container">
+            {% for message in app.flashes('success') %}
+                <div class="alert alert-success">{{ message }}</div>
+            {% endfor %}
+
+            {% for message in app.flashes('error') %}
+                <div class="alert alert-danger">{{ message }}</div>
+            {% endfor %}
+
+            {% block body %}{% endblock %}
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container footer-content">
+            <p>© {{ "now"|date("Y") }} Event Reservation App. Tous droits réservés.</p>
+        </div>
+    </footer>
+
+    {% block javascripts %}{% endblock %}
 </body>
 </html>

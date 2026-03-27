@@ -1,12 +1,29 @@
-<h2>Confirmation de réservation</h2>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Confirmation de réservation</title>
+</head>
+<body style="font-family: Arial, sans-serif; background:#f4f7fb; padding:30px; color:#1f2937;">
+    <div style="max-width:600px; margin:0 auto; background:#ffffff; border-radius:16px; overflow:hidden; box-shadow:0 10px 30px rgba(0,0,0,0.08);">
+        <div style="background:linear-gradient(135deg, #7c3aed, #06b6d4); padding:24px; color:#fff;">
+            <h2 style="margin:0;">Confirmation de réservation</h2>
+        </div>
 
-<p>Bonjour {{ reservation.name }},</p>
+        <div style="padding:24px;">
+            <p>Bonjour <strong>{{ reservation.name }}</strong>,</p>
 
-<p>Votre réservation a bien été enregistrée.</p>
+            <p>Votre réservation a bien été enregistrée avec succès.</p>
 
-<p><strong>Événement :</strong> {{ event.title }}</p>
-<p><strong>Date :</strong> {{ event.date|date('Y-m-d H:i') }}</p>
-<p><strong>Lieu :</strong> {{ event.location }}</p>
-<p><strong>Téléphone :</strong> {{ reservation.phone }}</p>
+            <div style="background:#f8fafc; border:1px solid #e5e7eb; border-radius:12px; padding:18px; margin:20px 0;">
+                <p><strong>Événement :</strong> {{ event.title }}</p>
+                <p><strong>Date :</strong> {{ event.date|date('d/m/Y H:i') }}</p>
+                <p><strong>Lieu :</strong> {{ event.location }}</p>
+                <p><strong>Téléphone :</strong> {{ reservation.phone }}</p>
+            </div>
 
-<p>Merci pour votre réservation et à bientôt.</p>
+            <p>Merci pour votre réservation et à bientôt.</p>
+        </div>
+    </div>
+</body>
+</html>

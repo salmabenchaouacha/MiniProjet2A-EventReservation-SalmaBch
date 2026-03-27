@@ -3,18 +3,45 @@
 {% block title %}Événements{% endblock %}
 
 {% block body %}
-    <h1>Liste des événements</h1>
+    <section class="mb-2">
+        <span class="badge">Catalogue des événements</span>
+        <h1 class="page-title">Découvrez les prochains événements</h1>
+        <p class="page-subtitle">
+            Choisissez l’événement qui vous intéresse et réservez votre place avant qu’il ne soit complet.
+        </p>
+    </section>
 
-    {% for event in events %}
-        <div style="border:1px solid #ccc; padding:10px; margin-bottom:10px;">
-            <h2>{{ event.title }}</h2>
-            <p>{{ event.description|slice(0, 120) }}...</p>
-            <p><strong>Date :</strong> {{ event.date|date('Y-m-d H:i') }}</p>
-            <p><strong>Lieu :</strong> {{ event.location }}</p>
-            <p><strong>Places restantes :</strong> {{ event.availableSeats }}</p>
-            <a href="{{ path('app_event_show', {id: event.id}) }}">Voir détail</a>
+    {% if events is empty %}
+        <div class="glass-card empty-state">
+            <h2>Aucun événement disponible</h2>
+            <p>Revenez bientôt pour découvrir les prochaines activités.</p>
         </div>
     {% else %}
-        <p>Aucun événement.</p>
-    {% endfor %}
+        <section class="events-grid">
+            {% for event in events %}
+                <article class="event-card">
+                    {% if event.image %}
+                        <img class="event-card-image" src="{{ asset('uploads/' ~ event.image) }}" alt="{{ event.title }}">
+                    {% else %}
+                        <img class="event-card-image" src="https://placehold.co/600x400?text=Event" alt="{{ event.title }}">
+                    {% endif %}
+
+                    <div class="event-card-body">
+                        <h3>{{ event.title }}</h3>
+                        <p class="event-description">
+                            {{ event.description|length > 120 ? event.description|slice(0, 120) ~ '...' : event.description }}
+                        </p>
+
+                        <div class="event-meta">
+                            <span><strong>Date :</strong> {{ event.date|date('d/m/Y H:i') }}</span>
+                            <span><strong>Lieu :</strong> {{ event.location }}</span>
+                            <span><strong>Places restantes :</strong> {{ event.availableSeats }}</span>
+                        </div>
+
+                        <a href="{{ path('app_event_show', {id: event.id}) }}" class="btn btn-primary">Voir détail</a>
+                    </div>
+                </article>
+            {% endfor %}
+        </section>
+    {% endif %}
 {% endblock %}

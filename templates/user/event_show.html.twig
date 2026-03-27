@@ -1,40 +1,54 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Détail événement{% endblock %}
+{% block title %}{{ event.title }}{% endblock %}
 
 {% block body %}
-    <h1>{{ event.title }}</h1>
+    <section class="detail-layout">
+        <div class="detail-card">
+            {% if event.image %}
+                <img class="detail-image" src="{{ asset('uploads/' ~ event.image) }}" alt="{{ event.title }}">
+            {% endif %}
 
-    <p>{{ event.description }}</p>
-    <p><strong>Date :</strong> {{ event.date|date('Y-m-d H:i') }}</p>
-    <p><strong>Lieu :</strong> {{ event.location }}</p>
-    <p><strong>Places restantes :</strong> {{ event.availableSeats }}</p>
+            <span class="badge">Détail de l’événement</span>
+            <h1 class="page-title">{{ event.title }}</h1>
+            <p class="lead">{{ event.description }}</p>
 
-    {% if event.image %}
-        <img src="/uploads/events/{{ event.image }}" alt="{{ event.title }}" width="300">
-    {% endif %}
-
-    <hr>
-
-    <h2>Réserver</h2>
-    <form id="reservation-form">
-        <input type="hidden" id="event_id" value="{{ event.id }}">
-        <div>
-            <label>Nom</label>
-            <input type="text" id="name" required>
+            <div class="event-meta mt-2">
+                <span><strong>Date :</strong> {{ event.date|date('d/m/Y à H:i') }}</span>
+                <span><strong>Lieu :</strong> {{ event.location }}</span>
+                <span><strong>Places totales :</strong> {{ event.seats }}</span>
+                <span><strong>Places restantes :</strong> {{ event.availableSeats }}</span>
+            </div>
         </div>
-        <div>
-            <label>Email</label>
-            <input type="email" id="email" required>
-        </div>
-        <div>
-            <label>Téléphone</label>
-            <input type="text" id="phone" required>
-        </div>
-        <button type="submit">Réserver</button>
-    </form>
 
-    <p id="reservation-message"></p>
+        <div class="form-card">
+            <h2 class="section-title">Réserver maintenant</h2>
+            <p class="muted mb-1">Remplissez le formulaire pour confirmer votre réservation.</p>
+
+            <form id="reservation-form">
+                <input type="hidden" id="event_id" value="{{ event.id }}">
+
+                <div class="form-group">
+                    <label for="name">Nom</label>
+                    <input type="text" id="name" placeholder="Votre nom complet" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" placeholder="exemple@email.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Téléphone</label>
+                    <input type="text" id="phone" placeholder="+216 ..." required>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Réserver</button>
+            </form>
+
+            <p id="reservation-message" class="mt-1 muted"></p>
+        </div>
+    </section>
 
     <script>
         document.getElementById('reservation-form').addEventListener('submit', async function(e) {
