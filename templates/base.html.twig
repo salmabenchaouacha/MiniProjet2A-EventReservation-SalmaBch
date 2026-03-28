@@ -14,17 +14,22 @@
     <header class="site-header">
         <div class="container nav-wrapper">
             <a href="{{ path('app_home') }}" class="logo">
-
-<img src="{{ asset('logoo.png') }}" alt="Eventify Logo" class="logo-img">                
-                
-
+                <img src="{{ asset('logoo.png') }}" alt="Eventify Logo" class="logo-img">
             </a>
 
             <nav class="main-nav">
-                <a href="{{ path('app_home') }}">Accueil</a>
-                <a href="{{ path('app_login_page') }}">Connexion</a>
-                <a href="{{ path('app_register_page') }}">Inscription</a>
-                <a href="{{ path('app_login') }}"> Connexion Admin</a>
+                {% if app.user %}
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <a href="{{ path('admin_dashboard') }}">Dashboard Admin</a>
+                        <a href="{{ path('app_logout') }}">Se déconnecter</a>
+                    {% else %}
+                        <span>{{ app.user.email }}</span>
+                        <a href="{{ path('app_logout') }}">Se déconnecter</a>
+                    {% endif %}
+                {% else %}
+                    <a href="{{ path('app_user_login') }}">Connexion</a>
+                    <a href="{{ path('app_login') }}">Dashboard Admin</a>
+                {% endif %}
             </nav>
         </div>
     </header>

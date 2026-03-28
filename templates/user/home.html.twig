@@ -37,7 +37,12 @@
 
             <div class="actions-row mt-2">
                 <button onclick="handleRegisterPasskey()" class="btn btn-secondary" type="button">Ajouter une passkey</button>
-                <button onclick="logout()" class="btn btn-danger" type="button">Se déconnecter</button>
+
+                {% if app.user %}
+                    <a href="{{ path('app_logout') }}" class="btn btn-danger">Se déconnecter</a>
+                {% else %}
+                    <a href="{{ path('app_user_login') }}" class="btn btn-danger">Se connecter</a>
+                {% endif %}
             </div>
 
             <p id="passkey-message" class="mt-1 muted"></p>
@@ -90,12 +95,6 @@
     </section>
 
     <script>
-        const token = localStorage.getItem('token');
-
-        if (!token) {
-            window.location.href = '/login';
-        }
-
         async function handleRegisterPasskey() {
             try {
                 const result = await registerPasskey();
@@ -104,12 +103,6 @@
             } catch (e) {
                 document.getElementById('passkey-message').innerText = e.message;
             }
-        }
-
-        function logout() {
-            localStorage.removeItem('token');
-            localStorage.removeItem('refresh_token');
-            window.location.href = '/login';
         }
     </script>
 {% endblock %}

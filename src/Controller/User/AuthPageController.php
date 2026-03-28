@@ -9,12 +9,6 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route('/user')]
 class AuthPageController extends AbstractController
 {
-    #[Route('/login', name: 'app_login_page')]
-    public function login(): Response
-    {
-        return $this->render('user/login.html.twig');
-    }
-
     #[Route('/register', name: 'app_register_page')]
     public function register(): Response
     {
