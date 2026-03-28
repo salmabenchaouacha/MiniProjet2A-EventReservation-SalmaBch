@@ -14,16 +14,17 @@
     <header class="site-header">
         <div class="container nav-wrapper">
             <a href="{{ path('app_home') }}" class="logo">
-                <span class="logo-badge">ER</span>
-                <span>Event Reservation</span>
+
+<img src="{{ asset('logoo.png') }}" alt="Eventify Logo" class="logo-img">                
+                
+
             </a>
 
             <nav class="main-nav">
                 <a href="{{ path('app_home') }}">Accueil</a>
-                <a href="{{ path('app_events') }}">Événements</a>
                 <a href="{{ path('app_login_page') }}">Connexion</a>
                 <a href="{{ path('app_register_page') }}">Inscription</a>
-                <a href="{{ path('admin_dashboard') }}">Admin</a>
+                <a href="{{ path('app_login') }}"> Connexion Admin</a>
             </nav>
         </div>
     </header>
