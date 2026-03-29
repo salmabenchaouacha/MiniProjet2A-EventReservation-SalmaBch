@@ -21,7 +21,7 @@
             {% for event in events %}
                 <article class="event-card">
                     {% if event.image %}
-                        <img class="event-card-image" src="{{ asset('uploads/' ~ event.image) }}" alt="{{ event.title }}">
+                        <img class="event-card-image" src="{{ event.image }}" alt="{{ event.title }}">
                     {% else %}
                         <img class="event-card-image" src="https://placehold.co/600x400?text=Event" alt="{{ event.title }}">
                     {% endif %}

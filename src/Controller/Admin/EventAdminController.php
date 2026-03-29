@@ -3,7 +3,6 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Event;
-use App\Service\FileUploader;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -18,8 +17,7 @@ class EventAdminController extends AbstractController
     #[Route('', name: 'api_admin_events_create', methods: ['POST'])]
     public function create(
         Request $request,
-        EntityManagerInterface $entityManager,
-        FileUploader $fileUploader
+        EntityManagerInterface $entityManager
     ): JsonResponse {
         $event = new Event();
 
@@ -29,12 +27,7 @@ class EventAdminController extends AbstractController
         $event->setSeats((int) $request->request->get('seats'));
         $event->setAvailableSeats((int) $request->request->get('seats'));
         $event->setDate(new \DateTime($request->request->get('date')));
-
-        $image = $request->files->get('image');
-        if ($image) {
-            $filename = $fileUploader->upload($image);
-            $event->setImage($filename);
-        }
+        $event->setImage($request->request->get('image'));
 
         $entityManager->persist($event);
         $entityManager->flush();
@@ -46,8 +39,7 @@ class EventAdminController extends AbstractController
     public function update(
         Event $event,
         Request $request,
-        EntityManagerInterface $entityManager,
-        FileUploader $fileUploader
+        EntityManagerInterface $entityManager
     ): JsonResponse {
         $event->setTitle($request->request->get('title', $event->getTitle()));
         $event->setDescription($request->request->get('description', $event->getDescription()));
@@ -64,10 +56,8 @@ class EventAdminController extends AbstractController
             $event->setDate(new \DateTime($request->request->get('date')));
         }
 
-        $image = $request->files->get('image');
-        if ($image) {
-            $filename = $fileUploader->upload($image);
-            $event->setImage($filename);
+        if ($request->request->get('image')) {
+            $event->setImage($request->request->get('image'));
         }
 
         $entityManager->flush();

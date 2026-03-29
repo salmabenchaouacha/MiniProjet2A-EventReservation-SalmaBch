@@ -17,9 +17,13 @@ class EventController extends AbstractController
         ]);
     }
 
-    #[Route('/events/{id}', name: 'app_event_show')]
+       #[Route('/events/{id}', name: 'app_event_show')]
     public function show(int $id, EventRepository $eventRepository): Response
     {
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_user_login');
+        }
+
         $event = $eventRepository->find($id);
 
         if (!$event) {

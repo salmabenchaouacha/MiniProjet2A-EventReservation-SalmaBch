@@ -3,52 +3,7 @@
 {% block title %}Accueil{% endblock %}
 
 {% block body %}
-    <section class="hero">
-        <div class="hero-card">
-            <span class="badge">Plateforme moderne de réservation</span>
-            <h1>Réservez vos événements facilement et rapidement</h1>
-            <p class="lead">
-                Découvrez les événements à venir, consultez leurs détails et réservez votre place
-                en quelques secondes avec une interface élégante et intuitive.
-            </p>
-
-            <div class="hero-actions">
-                <a href="{{ path('app_events') }}" class="btn btn-primary">Voir tous les événements</a>
-                <a href="{{ path('app_register_page') }}" class="btn btn-secondary">Créer un compte</a>
-            </div>
-        </div>
-
-        <div class="info-card">
-            <h2 class="section-title">Fonctionnalités</h2>
-            <div class="grid">
-                <div class="glass-card" style="padding: 1rem;">
-                    <h3>Réservation simple</h3>
-                    <p class="muted">Réservez une place avec vos informations en quelques clics.</p>
-                </div>
-                <div class="glass-card" style="padding: 1rem;">
-                    <h3>Passkey</h3>
-                    <p class="muted">Une expérience de connexion moderne et sécurisée.</p>
-                </div>
-                <div class="glass-card" style="padding: 1rem;">
-                    <h3>Gestion admin</h3>
-                    <p class="muted">Ajoutez, modifiez et supprimez les événements facilement.</p>
-                </div>
-            </div>
-
-            <div class="actions-row mt-2">
-                <button onclick="handleRegisterPasskey()" class="btn btn-secondary" type="button">Ajouter une passkey</button>
-
-                {% if app.user %}
-                    <a href="{{ path('app_logout') }}" class="btn btn-danger">Se déconnecter</a>
-                {% else %}
-                    <a href="{{ path('app_user_login') }}" class="btn btn-danger">Se connecter</a>
-                {% endif %}
-            </div>
-
-            <p id="passkey-message" class="mt-1 muted"></p>
-        </div>
-    </section>
-
+   
     <section class="mt-2">
         <span class="badge">Événements disponibles</span>
         <h2 class="page-title" style="font-size: 2.2rem;">Découvrez les événements à venir</h2>
@@ -56,17 +11,45 @@
             Réservez votre place parmi les événements actuellement disponibles.
         </p>
 
+        <div class="glass-card mt-2" style="padding: 1.5rem;">
+            <div class="filters-form" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:1rem; align-items:end;">
+                <div>
+                    <label for="filter-title">Titre</label>
+                    <input type="text" id="filter-title" class="form-control" placeholder="Rechercher par titre">
+                </div>
+
+                <div>
+                    <label for="filter-location">Lieu</label>
+                    <input type="text" id="filter-location" class="form-control" placeholder="Rechercher par lieu">
+                </div>
+
+                <div>
+                    <label for="filter-date">Date</label>
+                    <input type="date" id="filter-date" class="form-control">
+                </div>
+
+                <div>
+                    <button type="button" id="reset-filters" class="btn btn-secondary">Réinitialiser</button>
+                </div>
+            </div>
+        </div>
+
         {% if events is empty %}
             <div class="glass-card empty-state mt-2">
                 <h3>Aucun événement disponible</h3>
                 <p>Revenez bientôt pour découvrir les prochaines activités.</p>
             </div>
         {% else %}
-            <div class="events-grid">
+            <div class="events-grid" id="events-grid">
                 {% for event in events %}
-                    <article class="event-card">
+                    <article
+                        class="event-card"
+                        data-title="{{ event.title|lower }}"
+                        data-location="{{ event.location|lower }}"
+                        data-date="{{ event.date|date('Y-m-d') }}"
+                    >
                         {% if event.image %}
-                            <img class="event-card-image" src="{{ asset('uploads/' ~ event.image) }}" alt="{{ event.title }}">
+                            <img class="event-card-image" src="{{ event.image }}" alt="{{ event.title }}">
                         {% else %}
                             <img class="event-card-image" src="https://placehold.co/600x400?text=Event" alt="{{ event.title }}">
                         {% endif %}
@@ -91,18 +74,62 @@
                     </article>
                 {% endfor %}
             </div>
+
+            <div id="no-results" class="glass-card empty-state mt-2" style="display:none;">
+                <h3>Aucun résultat</h3>
+                <p>Aucun événement ne correspond aux filtres sélectionnés.</p>
+            </div>
         {% endif %}
     </section>
 
     <script>
-        async function handleRegisterPasskey() {
-            try {
-                const result = await registerPasskey();
-                document.getElementById('passkey-message').innerText =
-                    result.message || result.error || 'Passkey traitée';
-            } catch (e) {
-                document.getElementById('passkey-message').innerText = e.message;
+        const titleInput = document.getElementById('filter-title');
+        const locationInput = document.getElementById('filter-location');
+        const dateInput = document.getElementById('filter-date');
+        const resetButton = document.getElementById('reset-filters');
+        const cards = document.querySelectorAll('.event-card');
+        const noResults = document.getElementById('no-results');
+
+        function filterEvents() {
+            const titleValue = titleInput.value.trim().toLowerCase();
+            const locationValue = locationInput.value.trim().toLowerCase();
+            const dateValue = dateInput.value;
+
+            let visibleCount = 0;
+
+            cards.forEach(card => {
+                const title = card.dataset.title;
+                const location = card.dataset.location;
+                const date = card.dataset.date;
+
+                const matchTitle = !titleValue || title.includes(titleValue);
+                const matchLocation = !locationValue || location.includes(locationValue);
+                const matchDate = !dateValue || date === dateValue;
+
+                if (matchTitle && matchLocation && matchDate) {
+                    card.style.display = 'block';
+                    visibleCount++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            if (noResults) {
+                noResults.style.display = visibleCount === 0 ? 'block' : 'none';
             }
+        }
+
+        if (titleInput) titleInput.addEventListener('input', filterEvents);
+        if (locationInput) locationInput.addEventListener('input', filterEvents);
+        if (dateInput) dateInput.addEventListener('input', filterEvents);
+
+        if (resetButton) {
+            resetButton.addEventListener('click', () => {
+                titleInput.value = '';
+                locationInput.value = '';
+                dateInput.value = '';
+                filterEvents();
+            });
         }
     </script>
 {% endblock %}

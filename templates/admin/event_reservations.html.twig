@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Réservations - {{ event.title }}{% endblock %}
+
+{% block body %}
+    <section class="mb-2">
+        <span class="badge">Back-office</span>
+        <h1 class="page-title">Réservations de {{ event.title }}</h1>
+        <p class="page-subtitle">
+            Liste des personnes qui ont réservé cet événement.
+        </p>
+
+        <div class="actions-row mt-1">
+            <a href="{{ path('admin_events_index') }}" class="btn btn-secondary">Retour aux événements</a>
+        </div>
+    </section>
+
+    {% if reservations is empty %}
+        <div class="glass-card empty-state">
+            <h2>Aucune réservation</h2>
+            <p>Aucune personne n’a encore réservé cet événement.</p>
+        </div>
+    {% else %}
+        <div class="table-card">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nom</th>
+                        <th>Email</th>
+                        <th>Places</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for reservation in reservations %}
+                        <tr>
+                            <td>#{{ reservation.id }}</td>
+                            <td>{{ reservation.name }}</td>
+                            <td>{{ reservation.email }}</td>
+                            <td>{{ reservation.quantity }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
+{% endblock %}

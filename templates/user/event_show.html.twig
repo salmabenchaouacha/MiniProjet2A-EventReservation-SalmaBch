@@ -6,7 +6,7 @@
     <section class="detail-layout">
         <div class="detail-card">
             {% if event.image %}
-                <img class="detail-image" src="{{ asset('uploads/' ~ event.image) }}" alt="{{ event.title }}">
+                <img class="detail-image" src="{{ event.image }}" alt="{{ event.title }}">
             {% endif %}
 
             <span class="badge">Détail de l’événement</span>

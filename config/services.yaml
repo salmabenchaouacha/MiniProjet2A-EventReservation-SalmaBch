@@ -16,8 +16,5 @@ services:
     App\Service\FileUploader:
         arguments:
             $targetDirectory: '%event_images_directory%'
-    App\Security\LogoutSuccessHandler:
-    arguments:
-        $router: '@router'
-        $tokenStorage: '@security.token_storage'
-    
+
+   

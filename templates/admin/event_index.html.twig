@@ -42,7 +42,7 @@
                             <td>#{{ event.id }}</td>
                             <td>
                                 {% if event.image %}
-                                    <img class="table-thumb" src="{{ asset('uploads/' ~ event.image) }}" alt="{{ event.title }}">
+                                    <img class="table-thumb" src="{{ event.image }}" alt="{{ event.title }}">
                                 {% else %}
                                     <span class="muted">Aucune</span>
                                 {% endif %}
@@ -54,7 +54,13 @@
                             <td>{{ event.availableSeats }}</td>
                             <td>
                                 <div class="table-actions">
-                                    <a href="{{ path('admin_events_edit', {id: event.id}) }}" class="btn btn-secondary">Modifier</a>
+                                    <a href="{{ path('admin_event_reservations', {id: event.id}) }}" class="btn btn-primary">
+                                        Voir réservations
+                                    </a>
+
+                                    <a href="{{ path('admin_events_edit', {id: event.id}) }}" class="btn btn-secondary">
+                                        Modifier
+                                    </a>
 
                                     <form method="post"
                                           action="{{ path('admin_events_delete', {id: event.id}) }}"
