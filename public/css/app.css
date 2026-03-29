@@ -297,6 +297,33 @@ button {
     padding: 14px 24px;
     border-radius: 16px;
 }
+.btn-add-passkey {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background-color: #4f46e5;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.btn-add-passkey:hover {
+  background-color: #4338ca;
+}
+
+.btn-add-passkey:active {
+  transform: scale(0.97);
+}
+
+.btn-add-passkey:focus {
+  outline: 2px solid #818cf8;
+  outline-offset: 2px;
+}
 
 /* =========================================================
    ALERTS

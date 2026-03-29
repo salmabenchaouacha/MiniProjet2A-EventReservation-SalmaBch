@@ -22,7 +22,9 @@
                 {% if app.user %}
                     {% if is_granted('ROLE_ADMIN') %}
                         <a href="{{ path('admin_dashboard') }}">Dashboard Admin</a>
-                        <button type="button" id="add-passkey-btn" class="btn-passkey">Ajouter passkey</button>
+                        <button type="button" id="add-passkey-btn" class="btn-passkey btn-add-passkey">
+  Ajouter passkey
+</button>
                         <a href="{{ path('app_logout') }}">Se déconnecter</a>
                     {% else %}
                         <span>{{ app.user.email }}</span>
