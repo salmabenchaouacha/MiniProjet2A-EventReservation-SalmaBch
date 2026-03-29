@@ -25,34 +25,20 @@
 
                 <div class="form-group">
                     <label for="email">Email</label>
-                    <input
-                        type="email"
-                        id="email"
-                        name="email"
-                        value="{{ last_username }}"
-                        required
-                        autofocus
-                        placeholder="Votre adresse email"
-                    >
+                    <input type="email" id="email" name="email" value="{{ last_username }}" required autofocus>
                 </div>
 
                 <div class="form-group">
                     <label for="password">Mot de passe</label>
-                    <input
-                        type="password"
-                        id="password"
-                        name="password"
-                        required
-                        placeholder="Votre mot de passe"
-                    >
+                    <input type="password" id="password" name="password" required>
                 </div>
 
-                <button type="submit" class="btn btn-primary">Connexion par mot de passe</button>
+                <button type="submit" class="btn btn-primary">Se connecter</button>
             </form>
 
             <div class="text-center mt-2 mb-1 muted">ou</div>
 
-            <button type="button" onclick="loginWithPasskey()" class="btn btn-secondary">
+            <button type="button" id="login-passkey-btn" class="btn btn-secondary">
                 Connexion avec Passkey
             </button>
 
@@ -66,25 +52,4 @@
             </div>
         </div>
     </section>
-
-    <script>
-        async function loginWithPasskey() {
-            try {
-                const result = await loginWithPasskeyRequest();
-
-                document.getElementById('login-message').innerText =
-                    result.message || 'Connexion réussie';
-
-                if (result.redirect) {
-                    window.location.href = result.redirect;
-                    return;
-                }
-
-                window.location.href = '{{ path('app_home') }}';
-            } catch (e) {
-                document.getElementById('login-message').innerText =
-                    e.message || 'Erreur de connexion avec passkey';
-            }
-        }
-    </script>
 {% endblock %}

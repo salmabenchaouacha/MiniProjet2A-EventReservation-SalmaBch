@@ -10,20 +10,23 @@
 
     {% block stylesheets %}{% endblock %}
 </head>
+
 <body class="{% block body_class %}{% endblock %}">
     <header class="site-header">
         <div class="container nav-wrapper">
             <a href="{{ path('app_home') }}" class="logo">
-    <img src="{{ asset('logoo.png') }}" alt="Eventify Logo" class="logo-img">
-</a>
+                <img src="{{ asset('logoo.png') }}" alt="Eventify Logo" class="logo-img">
+            </a>
 
             <nav class="main-nav">
                 {% if app.user %}
                     {% if is_granted('ROLE_ADMIN') %}
                         <a href="{{ path('admin_dashboard') }}">Dashboard Admin</a>
+                        <button type="button" id="add-passkey-btn" class="btn-passkey">Ajouter passkey</button>
                         <a href="{{ path('app_logout') }}">Se déconnecter</a>
                     {% else %}
                         <span>{{ app.user.email }}</span>
+                        <button type="button" id="add-passkey-btn" class="btn-passkey">Ajouter passkey</button>
                         <a href="{{ path('app_logout') }}">Se déconnecter</a>
                     {% endif %}
                 {% else %}

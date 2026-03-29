@@ -37,9 +37,14 @@ class SecurityController extends AbstractController
         ]);
     }
 
-    #[Route('/logout', name: 'app_logout')]
-    public function logout(): void
+     #[Route('/logout', name: 'app_logout')]
+    public function logout(): Response
     {
-        throw new \LogicException('Cette méthode peut rester vide.');
+        $response = $this->redirectToRoute('app_home');
+
+        $response->headers->clearCookie('BEARER', '/');
+        $response->headers->clearCookie('REFRESH_TOKEN', '/');
+
+        return $response;
     }
 }

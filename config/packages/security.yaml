@@ -11,11 +11,11 @@ security:
 
     firewalls:
         dev:
-            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            pattern: "^/(_(profiler|wdt)|css|images|js)/"
             security: false
 
         login_password:
-            pattern: ^/api/auth/login$
+            pattern: "^/api/auth/login$"
             stateless: true
             provider: app_user_provider
             json_login:
@@ -26,7 +26,7 @@ security:
                 failure_handler: lexik_jwt_authentication.handler.authentication_failure
 
         api:
-            pattern: ^/api
+            pattern: "^/api"
             stateless: true
             provider: app_user_provider
             entry_point: jwt
@@ -37,6 +37,8 @@ security:
         main:
             lazy: true
             provider: app_user_provider
+            custom_authenticators:
+                - App\Security\JwtCookieAuthenticator
             form_login:
                 login_path: app_login
                 check_path: app_login
@@ -47,21 +49,27 @@ security:
                 failure_handler: App\Security\FormLoginFailureHandler
             logout:
                 path: app_logout
-                target: /
+                target: app_user_login
+                delete_cookies:
+                    BEARER: { path: / }
+                    REFRESH_TOKEN: { path: / }
 
     access_control:
-        - { path: ^/login$, roles: PUBLIC_ACCESS }
-        - { path: ^/user/login$, roles: PUBLIC_ACCESS }
-        - { path: ^/user/register$, roles: PUBLIC_ACCESS }
+        - { path: "^/$", roles: PUBLIC_ACCESS }
+        - { path: "^/login$", roles: PUBLIC_ACCESS }
+        - { path: "^/user/login$", roles: PUBLIC_ACCESS }
+        - { path: "^/user/register$", roles: PUBLIC_ACCESS }
 
-        - { path: ^/api/auth/register$, roles: PUBLIC_ACCESS }
-        - { path: ^/api/auth/login$, roles: PUBLIC_ACCESS }
-        - { path: ^/api/auth/passkey/login/options$, roles: PUBLIC_ACCESS }
-        - { path: ^/api/auth/passkey/login/verify$, roles: PUBLIC_ACCESS }
-        - { path: ^/api/token/refresh$, roles: PUBLIC_ACCESS }
+        - { path: "^/api/auth/register$", roles: PUBLIC_ACCESS }
+        - { path: "^/api/auth/login$", roles: PUBLIC_ACCESS }
+        - { path: "^/api/auth/passkey/login/options$", roles: PUBLIC_ACCESS }
+        - { path: "^/api/auth/passkey/login/verify$", roles: PUBLIC_ACCESS }
+        - { path: "^/api/token/refresh$", roles: PUBLIC_ACCESS }
 
-        - { path: ^/admin, roles: ROLE_ADMIN }
-        - { path: ^/api/admin, roles: ROLE_ADMIN }
-        - { path: ^/api/auth/passkey/register, roles: ROLE_USER }
-        - { path: ^/api/auth/me$, roles: ROLE_USER }
-        - { path: ^/api, roles: ROLE_USER }
+        - { path: "^/auth/passkey/register/options$", roles: ROLE_USER }
+        - { path: "^/auth/passkey/register/verify$", roles: ROLE_USER }
+
+        - { path: "^/admin", roles: ROLE_ADMIN }
+        - { path: "^/api/admin", roles: ROLE_ADMIN }
+        - { path: "^/api/auth/me$", roles: ROLE_USER }
+        - { path: "^/api", roles: ROLE_USER }
