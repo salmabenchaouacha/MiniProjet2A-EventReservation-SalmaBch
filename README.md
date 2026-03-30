@@ -42,7 +42,7 @@
 Clone the repository
 ```bash
 git clone https://github.com/salmabenchaouacha/MiniProjet2A-EventReservation-SalmaBch
-cd MiniProjet2A-EventReservation-RajaBarhoumi
+cd MiniProjet2A-EventReservation-SalmaBch
 ```
 From the project root:
 
