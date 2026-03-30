@@ -88,8 +88,12 @@ Fixtures create:
 # DEMO:
 <img width="1653" height="811" alt="image" src="https://github.com/user-attachments/assets/6f1f99ee-4f93-49e4-8838-7487285b292e" />
 <img width="1667" height="392" alt="image" src="https://github.com/user-attachments/assets/a8b8e9e4-e8a0-42fa-abc7-75087b2b9eb1" />
+<img width="796" height="730" alt="image" src="https://github.com/user-attachments/assets/70f9c347-7fd6-46ba-82c9-370a6345758d" />
+
 =============================================================================
 <img width="1665" height="822" alt="image" src="https://github.com/user-attachments/assets/26c7ecff-c3cc-4c65-af0a-963ac8775dfa" />
+=============================================================================
+
 =============================================================================
 <img width="1677" height="812" alt="image" src="https://github.com/user-attachments/assets/b2433d9d-ff6e-4590-9a70-6bce73baddbe" />
 <img width="1647" height="821" alt="image" src="https://github.com/user-attachments/assets/2b5ad012-2b7b-41dc-8de9-cdbdaefd07cb" />
