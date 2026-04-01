@@ -1,4 +1,5 @@
-<img width="350" height="150" alt="Gemini_Generated_Image_m72hrvm72hrvm72h-removebg-preview" src="https://github.com/user-attachments/assets/b8c6264d-8539-4e1e-a01b-9dde227c3141" />
+<img width="400" height="160" alt="logoo" src="https://github.com/user-attachments/assets/8c021df4-45f2-4b06-a2d8-78516694027d" />
+
 
 
 # Web Application for Event Reservation Management
@@ -99,6 +100,7 @@ Fixtures create:
 <img width="1647" height="821" alt="image" src="https://github.com/user-attachments/assets/2b5ad012-2b7b-41dc-8de9-cdbdaefd07cb" />
 =============================================================================
 <img width="1651" height="795" alt="image" src="https://github.com/user-attachments/assets/ae3800ed-2564-45ba-9ff0-297872f1094a" />
+<img width="1197" height="632" alt="image" src="https://github.com/user-attachments/assets/853fe733-6b1f-4102-9c98-b01b6403ae33" />
 
 <img width="1647" height="562" alt="image" src="https://github.com/user-attachments/assets/bd9f1381-fd5e-4dbf-8093-2dd6f0759ef9" />
 =============================================================================
