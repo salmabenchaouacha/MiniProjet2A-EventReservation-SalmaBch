@@ -100,9 +100,10 @@ Fixtures create:
 <img width="1647" height="821" alt="image" src="https://github.com/user-attachments/assets/2b5ad012-2b7b-41dc-8de9-cdbdaefd07cb" />
 =============================================================================
 <img width="1651" height="795" alt="image" src="https://github.com/user-attachments/assets/ae3800ed-2564-45ba-9ff0-297872f1094a" />
-<img width="1197" height="632" alt="image" src="https://github.com/user-attachments/assets/853fe733-6b1f-4102-9c98-b01b6403ae33" />
 
 <img width="1647" height="562" alt="image" src="https://github.com/user-attachments/assets/bd9f1381-fd5e-4dbf-8093-2dd6f0759ef9" />
+<img width="1197" height="632" alt="image" src="https://github.com/user-attachments/assets/853fe733-6b1f-4102-9c98-b01b6403ae33" />
+
 =============================================================================
 ADMIN :
 <img width="1673" height="807" alt="image" src="https://github.com/user-attachments/assets/615bdfb0-bccc-4ed6-97bd-51ebbe5b16e9" />
